@@ -1,1 +1,1 @@
-# Simple Web App
+# Simple Error Web App
