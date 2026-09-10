@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+function trackNoteCreated(noteId: number) {
+  console.log(`note_created: ${noteId}`);
+}
+
 export default function NoteForm() {
   const [title, setTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +23,12 @@ export default function NoteForm() {
     if (!res.ok) {
       setError(`Request failed: ${res.status}`);
       return;
+    }
+    const data = await res.json();
+    try {
+      trackNoteCreated(data.note.id);
+    } catch (err) {
+      console.error("[Sentry] captureException:", err);
     }
     setTitle("");
     router.refresh();
