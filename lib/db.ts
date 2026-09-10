@@ -7,7 +7,11 @@ export type Note = {
 };
 
 function sql() {
-  return neon(process.env.DATABASE_URL!);
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    throw new Error("DATABASE_URL environment variable is not set. Please configure it in your Vercel project settings.");
+  }
+  return neon(url);
 }
 
 export async function getNotes(): Promise<Note[]> {
