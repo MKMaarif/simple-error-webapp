@@ -7,10 +7,10 @@ export type Note = {
 };
 
 function sql() {
-  const dbUrl = process.env.POSTGRES_URL;
+  const dbUrl = process.env.DATABASE_URL;
   if (!dbUrl) {
     throw new Error(
-      "Missing POSTGRES_URL environment variable. Set it to your Neon database connection string (e.g. from the Vercel Postgres integration)."
+      "Missing DATABASE_URL environment variable. Set it to your Neon database connection string."
     );
   }
   return neon(dbUrl);
