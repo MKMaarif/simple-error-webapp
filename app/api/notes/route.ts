@@ -3,7 +3,7 @@ import { createNote } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { name } = body;
-  await createNote(name.trim());
+  const { title } = body;
+  await createNote(title.trim());
   return NextResponse.json({ ok: true });
 }
