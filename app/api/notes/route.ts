@@ -4,6 +4,6 @@ import { createNote } from "@/lib/db";
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { title } = body;
-  await createNote(title.trim());
-  return NextResponse.json({ ok: true });
+  const id = await createNote(title.trim());
+  return NextResponse.json({ note: { id } });
 }
