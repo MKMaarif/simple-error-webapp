@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-function trackNoteCreated(noteId: number) {
-  console.log(`note_created: ${noteId}`);
+function trackNoteCreated(noteId?: number) {
+  if (noteId !== undefined) {
+    console.log(`note_created: ${noteId}`);
+  }
 }
 
 export default function NoteForm() {
@@ -26,7 +28,7 @@ export default function NoteForm() {
     }
     const data = await res.json();
     try {
-      trackNoteCreated(data.note.id);
+      trackNoteCreated(data?.note?.id);
     } catch (err) {
       console.error("[Sentry] captureException:", err);
     }
