@@ -25,10 +25,8 @@ export default function NoteForm() {
       return;
     }
     const data = await res.json();
-    try {
+    if (data.note?.id) {
       trackNoteCreated(data.note.id);
-    } catch (err) {
-      console.error("[Sentry] captureException:", err);
     }
     setTitle("");
     router.refresh();
