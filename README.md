@@ -16,3 +16,7 @@ npm run dev
 ```
 
 Needs `POSTGRES_URL` set (see Vercel Postgres dashboard → `.env.local`).
+
+---
+
+*Verifier smoke-test marker — no-op change to confirm CI pipeline runs green.*
