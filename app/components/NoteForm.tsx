@@ -26,7 +26,7 @@ export default function NoteForm() {
     }
     const data = await res.json();
     try {
-      trackNoteCreated(data.note.id);
+      trackNoteCreated(data?.note?.id);
     } catch (err) {
       console.error("[Sentry] captureException:", err);
     }
