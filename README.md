@@ -16,3 +16,5 @@ npm run dev
 ```
 
 Needs `POSTGRES_URL` set (see Vercel Postgres dashboard → `.env.local`).
+
+<!-- verifier-green-path-smoke-test: no-op marker -->
