@@ -25,7 +25,7 @@ export default function NoteForm() {
       return;
     }
     const data = await res.json();
-    if (data.note) {
+    if (data.note?.id) {
       trackNoteCreated(data.note.id);
     }
     setTitle("");
