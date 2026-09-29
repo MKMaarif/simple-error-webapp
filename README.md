@@ -16,3 +16,5 @@ npm run dev
 ```
 
 Needs `POSTGRES_URL` set (see Vercel Postgres dashboard → `.env.local`).
+
+<!-- 2025-01-17: Plumbing proof comment per Phase 02.2 D-09 -->
