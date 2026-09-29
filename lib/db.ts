@@ -19,6 +19,7 @@ export async function getNotes(): Promise<Note[]> {
   return rows as Note[];
 }
 
-export async function createNote(title: string): Promise<void> {
-  await sql()`INSERT INTO notes (title) VALUES (${title})`;
+export async function createNote(title: string): Promise<Note> {
+  const rows = await sql()`INSERT INTO notes (title) VALUES (${title}) RETURNING id, title, created_at`;
+  return (rows as Note[])[0];
 }
