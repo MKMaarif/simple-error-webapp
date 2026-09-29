@@ -16,3 +16,7 @@ npm run dev
 ```
 
 Needs `POSTGRES_URL` set (see Vercel Postgres dashboard → `.env.local`).
+
+## Smoke Test
+
+This repository is used to verify the async fix-issue contract end-to-end.
