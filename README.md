@@ -16,3 +16,7 @@ npm run dev
 ```
 
 Needs `POSTGRES_URL` set (see Vercel Postgres dashboard → `.env.local`).
+
+---
+
+*Smoke test: async fix-issue contract verified ✓*
