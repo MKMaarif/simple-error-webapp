@@ -16,3 +16,5 @@ npm run dev
 ```
 
 Needs `POSTGRES_URL` set (see Vercel Postgres dashboard → `.env.local`).
+
+- [UAT Phase 10 Probe](./UAT_PHASE10_PROBE.md)
