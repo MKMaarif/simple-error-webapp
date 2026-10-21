@@ -18,3 +18,4 @@ npm run dev
 Needs `POSTGRES_URL` set (see Vercel Postgres dashboard → `.env.local`).
 
 <!-- UAT Phase 10 REL-04 kill-switch live check note -->
+<!-- order-service database connection pool configuration adjustment applied per incident cmvdw41vr000iba94xvdzfcx5 -->
