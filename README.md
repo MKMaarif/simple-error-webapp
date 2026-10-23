@@ -18,5 +18,3 @@ npm run dev
 Needs `POSTGRES_URL` set (see Vercel Postgres dashboard → `.env.local`).
 
 <!-- UAT Phase 10 REL-04 kill-switch live check note -->
-
-<!-- This is only for test, in ticket `ERROR-8` -->
