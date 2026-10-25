@@ -1,4 +1,4 @@
-import { neon } from "@neondatabase/serverless";
+import { Pool } from "pg";
 
 export type Note = {
   id: number;
@@ -6,19 +6,21 @@ export type Note = {
   created_at: string;
 };
 
-function sql() {
+let pool: Pool | undefined;
+
+function db() {
   const url = process.env.DATABASE_URL;
   if (!url) {
     throw new Error("DATABASE_URL environment variable is not set. Please configure it in your Vercel project settings.");
   }
-  return neon(url);
+  return (pool ??= new Pool({ connectionString: url }));
 }
 
 export async function getNotes(): Promise<Note[]> {
-  const rows = await sql()`SELECT id, title, created_at FROM notes ORDER BY created_at DESC`;
+  const { rows } = await db().query("SELECT id, title, created_at FROM notes ORDER BY created_at DESC");
   return rows as Note[];
 }
 
 export async function createNote(title: string): Promise<void> {
-  await sql()`INSERT INTO notes (title) VALUES (${title})`;
+  await db().query("INSERT INTO notes (title) VALUES ($1)", [title]);
 }
