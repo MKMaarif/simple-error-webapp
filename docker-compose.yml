@@ -1,0 +1,48 @@
+# SYN-63 e2e stack: local only, Vercel is unaffected.
+# Run from this folder: docker compose --env-file ../../openobserve-local/.env up -d --build
+services:
+  app:
+    build: .
+    container_name: simple-webapp-app
+    ports:
+      - "3100:3000"
+    environment:
+      ENABLE_BOOM: "1"
+      DATABASE_URL: postgres://notes:notes@db:5432/notes
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # No host port: host 5432 belongs to the platform Postgres. Credentials are local-only, not a secret.
+  db:
+    image: postgres:16-alpine
+    container_name: simple-webapp-db
+    environment:
+      POSTGRES_USER: notes
+      POSTGRES_PASSWORD: notes
+      POSTGRES_DB: notes
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - simple-webapp-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U notes -d notes"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  vector:
+    image: timberio/vector:0.60.0-alpine
+    container_name: simple-webapp-vector
+    # Vector 0.60 disables ${VAR} interpolation by default; the flag is needed for the O2 basic auth below.
+    command: ["--dangerously-allow-env-var-interpolation", "--config", "/etc/vector/vector.yaml"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./vector.yaml:/etc/vector/vector.yaml:ro
+    environment:
+      O2_EMAIL: ${O2_EMAIL:?run with --env-file ../../openobserve-local/.env}
+      O2_PASSWORD: ${O2_PASSWORD:?run with --env-file ../../openobserve-local/.env}
+    depends_on:
+      - app
+
+volumes:
+  simple-webapp-db-data:

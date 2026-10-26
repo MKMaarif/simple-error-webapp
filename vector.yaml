@@ -1,0 +1,39 @@
+# docker_logs -> remap -> OpenObserve app_logs (SYN-63 D-08/D-09/D-10/D-20).
+# Only the webapp container is collected, so db/vector lines never become error rows.
+sources:
+  webapp:
+    type: docker_logs
+    include_containers: ["simple-webapp-app"]
+
+transforms:
+  shape:
+    type: remap
+    inputs: ["webapp"]
+    source: |
+      .container = .container_name
+      .host = "simple-webapp-local"
+      .level = if .stream == "stderr" { "error" } else { "info" }
+      . = {
+        "message": .message,
+        "level": .level,
+        "host": .host,
+        "container": .container,
+        "stream": .stream
+      }
+
+sinks:
+  o2:
+    type: http
+    inputs: ["shape"]
+    uri: http://host.docker.internal:5080/api/default/app_logs/_json
+    method: post
+    auth:
+      strategy: basic
+      user: "${O2_EMAIL}"
+      password: "${O2_PASSWORD}"
+    compression: gzip
+    encoding:
+      codec: json
+      timestamp_format: rfc3339
+    healthcheck:
+      enabled: false
