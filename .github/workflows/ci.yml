@@ -38,17 +38,17 @@ jobs:
       
       - name: Run smoke test for POST /api/notes
         run: |
-          # Valid payload per the frontend contract (app/components/NoteForm.tsx sends "title") — must succeed
+          # Valid payload per the updated API contract - must succeed
           status=$(curl -X POST http://localhost:3000/api/notes \
             -H "Content-Type: application/json" \
-            -d '{"title": "Test Note"}' \
+            -d '{"name": "Test Note"}' \
             -o /tmp/notes_response.json \
             -w "%{http_code}" \
             -s)
           echo "Status: $status"
           cat /tmp/notes_response.json
           if [ "$status" -ge 400 ]; then
-            echo "Expected POST /api/notes to succeed with a title payload, got $status"
+            echo "Expected POST /api/notes to succeed with a name payload, got $status"
             exit 1
           fi
       
